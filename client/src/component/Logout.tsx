@@ -1,4 +1,5 @@
-import { useNavigate } from "react-router-dom"; // For navigation after logout
+import { LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Logout = () => {
   const navigate = useNavigate();
@@ -17,9 +18,10 @@ const Logout = () => {
   };
 
   return (
-    <div>
-      <button onClick={handleLogout}>Logout</button>
-    </div>
+    <button type="button" onClick={handleLogout} className="flex items-center gap-3 p-3 bg-gray-800 rounded-lg cursor-pointer w-full">
+      <LogOut size={20} />
+      Logout
+    </button>
   );
 };
 

@@ -13,13 +13,23 @@ export const getFinancialData = async (req, res) => {
 
 // Insert new financial data
 export const addFinancialData = async (req, res) => {
-  const { date, revenue, expenses, profit, customer_count } = req.body;
+  const data = req.body;
+
+  if (!Array.isArray(data)) {
+    return res.status(400).json({ message: "Invalid data format. Expected an array." });
+  }
+
+  // Calculate profit dynamically
+  const dataWithProfit = data.map(row => ({
+    ...row,
+    profit: row.revenue - row.expenses // Calculate profit
+  }));
 
   try {
-    await insertFinancialData({ date, revenue, expenses, profit, customer_count });
-    res.status(201).json({ message: "Data inserted successfully!" });
+    await insertBulkFinancialData(dataWithProfit);
+    res.status(201).json({ message: "Bulk data inserted successfully!" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "An error occurred while inserting data." });
+    res.status(500).json({ message: "An error occurred while inserting bulk data." });
   }
 };

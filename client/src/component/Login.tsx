@@ -62,53 +62,44 @@ const Login = () => {
   };
 
   return (
-    <div className="relative flex justify-center items-center h-screen bg-[#080710]">
-      {/* Background Shapes */}
-      <div className="absolute w-[430px] h-[520px]">
-        <div className="absolute w-[200px] h-[200px] bg-gradient-to-br from-[#1845ad] to-[#23a2f6] rounded-full -top-20 -left-20"></div>
-        <div className="absolute w-[200px] h-[200px] bg-gradient-to-r from-[#ff512f] to-[#f09819] rounded-full -bottom-20 -right-10"></div>
+    <div className="flex justify-center items-center min-h-screen bg-gray-900 px-4">
+      <div className="bg-white shadow-lg p-8 rounded-md w-full max-w-md">
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="username"
+            id="username"
+            value={data.username}
+            onChange={handleInputChange}
+            className="w-full border border-gray-300 rounded-md p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+
+          <input
+            type="password"
+            placeholder="password"
+            id="password"
+            value={data.password}
+            onChange={handleInputChange}
+            className="w-full border border-gray-300 rounded-md p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-teal-500 text-white font-semibold py-3 rounded-md hover:bg-gray-600 transition cursor-pointer"
+          >
+            LOGIN
+          </button>
+
+          {message && <p className="text-red-500 text-sm mt-3 text-center">{message}</p>}
+
+          <p className="text-gray-600 text-sm mt-4 text-center">
+            Not registered?{" "}
+            <Link to="/register" className="text-teal-500 hover:underline">
+              Create an account
+            </Link>
+          </p>
+        </form>
       </div>
-
-      {/* Form Container */}
-      <form
-        onSubmit={handleSubmit}
-        className="relative z-10 w-[400px] bg-white/10 backdrop-blur-lg border border-white/10 shadow-lg p-10 rounded-lg"
-      >
-        <h3 className="text-2xl font-medium text-white text-center mb-6">Login Here</h3>
-
-        <label className="block text-white text-sm font-medium">Username</label>
-        <input
-          type="text"
-          placeholder="Email or Phone"
-          id="username"
-          value={data.username}
-          onChange={handleInputChange}
-          className="w-full h-12 bg-white/10 rounded px-3 mt-2 text-white placeholder-gray-300 focus:outline-none"
-        />
-
-        <label className="block text-white text-sm font-medium mt-4">Password</label>
-        <input
-          type="password"
-          placeholder="Password"
-          id="password"
-          value={data.password}
-          onChange={handleInputChange}
-          className="w-full h-12 bg-white/10 rounded px-3 mt-2 text-white placeholder-gray-300 focus:outline-none"
-        />
-
-        <button
-          type="submit"
-          className="mt-6 w-full bg-white text-black font-semibold py-3 rounded hover:bg-gray-200 transition"
-        >
-          Log In
-        </button>
-
-        {message && <p className="text-white text-sm mt-3 text-center">{message}</p>}
-
-        <div className="mt-4 text-center">
-          <Link to="/register" className="text-white hover:underline">Register</Link>
-        </div>
-      </form>
     </div>
   );
 };

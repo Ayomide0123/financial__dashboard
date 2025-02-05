@@ -8,9 +8,9 @@ export const getAllFinancialData = async () => {
 
 // Insert new financial data
 export const insertFinancialData = async (data) => {
-  const { date, revenue, expenses, profit, customer_count } = data;
+  const values = data.map((row) => [row.date, row.revenue, row.expenses, row.profit, row.customer_count]);
   await db.query(
-    "INSERT INTO financial_data (date, revenue, expenses, profit, customer_count) VALUES (?, ?, ?, ?, ?)",
-    [date, revenue, expenses, profit, customer_count]
+    "INSERT INTO financial_data (date, revenue, expenses, profit, customer_count) VALUES ?",
+    [values]
   );
 };

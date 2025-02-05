@@ -1,28 +1,34 @@
-import { useEffect, useState } from 'react';
-import { BarChart as ReBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import { useEffect, useState } from "react";
+import { BarChart as ReBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+
+interface FinancialDataItem {
+  date: string;
+  revenue: string;
+  expenses: string;
+  profit: string;
+  customer_count: number;
+}
 
 const BarChart = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    // Fetch data from the API
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/financial/financial-data');
+        const response = await fetch("http://localhost:5001/api/financial/financial-data");
         const result = await response.json();
 
-        // Transform the data to match the chart's requirements
-        const transformedData = result.map(item => ({
-          name: new Date(item.date).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+        const transformedData = result.map((item: FinancialDataItem) => ({
+          name: new Date(item.date).toLocaleDateString("en-US", { month: "short", year: "numeric" }),
           revenue: parseFloat(item.revenue),
           expenses: parseFloat(item.expenses),
           profit: parseFloat(item.profit),
-          customerCount: item.customer_count
+          customerCount: item.customer_count,
         }));
 
         setData(transformedData);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -30,19 +36,26 @@ const BarChart = () => {
   }, []);
 
   return (
-    <div>
-      <ReBarChart width={600} height={300} data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="revenue" fill="#8884d8" />
-        <Bar dataKey="expenses" fill="#82ca9d" />
-        <Bar dataKey="profit" fill="#ffc658" />
-      </ReBarChart>
+    <div className="bg-white p-6 shadow-2xl rounded-lg w-full max-w-4xl mx-auto">
+      <h2 className="text-lg font-semibold mb-4">Financial Overview</h2>
+      {data.length === 0 ? (
+        <p>Loading data...</p>
+      ) : (
+        <ResponsiveContainer width="100%" height={350}>
+          <ReBarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="revenue" fill="#4F46E5" />
+            <Bar dataKey="expenses" fill="#EC4899" />
+            <Bar dataKey="profit" fill="#22C55E" />
+          </ReBarChart>
+        </ResponsiveContainer>
+      )}
     </div>
   );
-}
+};
 
 export default BarChart;

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 interface LoginDetails {
   username: string;
@@ -12,6 +13,7 @@ const Login = () => {
   });
 
   const [message, setMessage] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -29,7 +31,7 @@ const Login = () => {
 
     try {
       // Make a POST request to your backend API
-      const response = await fetch("https://your-backend-api.com/login", {
+      const response = await fetch("http://localhost:5001/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,13 +47,14 @@ const Login = () => {
       setMessage("Login successful!");
       console.log(result); // Log the response from the server
 
-      // Save the token or user data to local storage or context
+      // Save the token to a cookie
       if (result.token) {
-        localStorage.setItem("token", result.token);
+        document.cookie = `token=${result.token}; path=/;`;
       }
 
-      // Redirect the user to the dashboard or home page
-      // Example: window.location.href = "/dashboard";
+      // Redirect the user to the dashboard page
+      navigate("/");
+
     } catch (error) {
       setMessage("Invalid username or password.");
       console.error(error);
@@ -88,7 +91,8 @@ const Login = () => {
         <button type="submit">Log In</button>
         {message && <p>{message}</p>}
         <div className="social">
-          <h4>Register</h4>
+          {/* <h4>Register</h4> */}
+          <Link to="/register">Register</Link>
         </div>
       </form>
     </>

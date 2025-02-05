@@ -1,5 +1,6 @@
 import db from "../config/db.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 // Register a new user
 export const registerUser = async (req, res) => {
@@ -54,10 +55,28 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Invalid username or password." });
     }
 
-    // Send a success response (you can also generate a token here)
-    res.status(200).json({ message: "Login successful!", user: user[0] });
+    // Generate a JWT token
+    const token = jwt.sign(
+      { userId: user[0].id, username: user[0].username },
+      process.env.JWT_SECRET, // Use a secret key from environment variables
+      { expiresIn: "1h" } // Token expires in 1 hour
+    );
+
+    // Send a success response with the token
+    res.status(200).json({ message: "Login successful!", token, user: user[0] });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "An error occurred during login." });
   }
+};
+
+// Log Out a user
+export const logoutUser = (req, res) => {
+  // Destroy the session
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ message: "An error occurred during logout." });
+    }
+    res.status(200).json({ message: "Logout successful!" });
+  });
 };

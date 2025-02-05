@@ -1,19 +1,21 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-interface UserDetails {
+interface RegistrationDetails {
   name: string;
   username: string;
   password: string;
 }
 
 const Register = () => {
-  const [data, setData] = useState<UserDetails>({
+  const [data, setData] = useState<RegistrationDetails>({
     name: "",
     username: "",
     password: "",
   });
 
   const [message, setMessage] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -31,7 +33,7 @@ const Register = () => {
 
     try {
       // Make a POST request to your backend API
-      const response = await fetch("https://your-backend-api.com/register", {
+      const response = await fetch("http://localhost:5001/api/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,6 +48,8 @@ const Register = () => {
       const result = await response.json();
       setMessage("Registration successful!");
       console.log(result); // Log the response from the server
+
+      navigate("/login");
     } catch (error) {
       setMessage("An error occurred during registration.");
       console.error(error);
@@ -91,7 +95,8 @@ const Register = () => {
         <button type="submit">Register</button>
         {message && <p>{message}</p>}
         <div className="social">
-          <h4>Login</h4>
+          {/* <h4>Login</h4> */}
+          <Link to="/login">Login</Link>
         </div>
       </form>
     </>

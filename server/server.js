@@ -10,17 +10,20 @@ const app = express();
 
 const PORT = process.env.PORT || 5001;
 
+// CORS Setup
+app.use(cors({
+  origin: ["http://localhost:5173", "https://agandco-financial-dashboard.vercel.app"], // Add your allowed origins here
+  credentials: true, // Allow credentials like cookies or authorization headers
+}));
+
 // Middleware
-app.use(cors());
 app.use(express.json());
 
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/financial", financialRoutes);
 
-// Vercel requires the export to be a handler
-// export default (req, res) => app(req, res);
-
+// Start Server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

@@ -26,6 +26,7 @@ const FinancialData = () => {
           profit: Number(item.profit),
           customer_count: Number(item.customer_count),
         }));
+
         setData(formattedResult);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -40,25 +41,26 @@ const FinancialData = () => {
       <h1 className="text-2xl font-bold mb-4 text-center">Financial Data</h1>
 
       {/* Responsive Table Container */}
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[600px] border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-800 text-white">
-              <th className="p-3 border border-gray-300">Date</th>
-              <th className="p-3 border border-gray-300">Revenue</th>
-              <th className="p-3 border border-gray-300">Expenses</th>
-              <th className="p-3 border border-gray-300">Profit</th>
-              <th className="p-3 border border-gray-300">Customer Count</th>
+      <div className="overflow-x-auto shadow-md rounded-lg">
+        <table className="w-full table-auto border-collapse border border-gray-300">
+          {/* Sticky Table Header */}
+          <thead className="bg-gray-800 text-white sticky top-0">
+            <tr>
+              <th className="p-3 border border-gray-300 text-left">Date</th>
+              <th className="p-3 border border-gray-300 text-left">Revenue</th>
+              <th className="p-3 border border-gray-300 text-left">Expenses</th>
+              <th className="p-3 border border-gray-300 text-left">Profit</th>
+              <th className="p-3 border border-gray-300 text-left">Customer Count</th>
             </tr>
           </thead>
           <tbody>
             {data.map((row) => (
-              <tr key={row.id} className="text-center odd:bg-gray-100 even:bg-white">
-                <td className="p-3 border border-gray-300">{new Date(row.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</td>
-                <td className="p-3 border border-gray-300">₦{row.revenue.toFixed(2)}</td>
-                <td className="p-3 border border-gray-300">₦{row.expenses.toFixed(2)}</td>
-                <td className="p-3 border border-gray-300">₦{row.profit.toFixed(2)}</td>
-                <td className="p-3 border border-gray-300">{row.customer_count}</td>
+              <tr key={row.id} className="odd:bg-gray-100 even:bg-white hover:bg-gray-200">
+                <td className="p-3 border border-gray-300 whitespace-nowrap">{new Date(row.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+                <td className="p-3 border border-gray-300 whitespace-nowrap">₦{row.revenue.toFixed(2)}</td>
+                <td className="p-3 border border-gray-300 whitespace-nowrap">₦{row.expenses.toFixed(2)}</td>
+                <td className="p-3 border border-gray-300 whitespace-nowrap">₦{row.profit.toFixed(2)}</td>
+                <td className="p-3 border border-gray-300 whitespace-nowrap">{row.customer_count}</td>
               </tr>
             ))}
           </tbody>

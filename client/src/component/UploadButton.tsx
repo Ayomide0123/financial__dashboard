@@ -102,7 +102,7 @@ const UploadButton = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center bg-white w-full">
+    <div className="flex flex-col justify-center bg-white w-full mt-4 mb-4 lg:mt-0 lg:mb-0">
       <h2 className="text-lg font-semibold mb-4">Upload Financial Data</h2>
 
       <div className="flex gap-3">

@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import React, { useState } from "react";
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
@@ -84,7 +85,7 @@ const UploadButton = () => {
 
   const sendDataToBackend = async (data: FinancialData[]) => {
     try {
-      const response = await fetch("http://localhost:5001/api/financial/financial-data", {
+      const response = await fetch(`${apiUrl}/api/financial/financial-data`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

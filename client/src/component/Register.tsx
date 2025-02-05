@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -33,7 +34,7 @@ const Register = () => {
 
     try {
       // Make a POST request to your backend API
-      const response = await fetch("http://localhost:5001/api/users/register", {
+      const response = await fetch(`${apiUrl}/api/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

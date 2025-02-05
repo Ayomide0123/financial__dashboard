@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useEffect, useState } from "react";
 
 interface FinancialData {
@@ -15,7 +16,7 @@ const FinancialData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5001/api/financial/financial-data");
+        const response = await fetch(`${apiUrl}/api/financial/financial-data`);
         const result: FinancialData[] = await response.json();
 
         // Convert string values to numbers

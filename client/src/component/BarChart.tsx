@@ -1,3 +1,4 @@
+const apiUrl = import.meta.env.VITE_API_URL;
 import { useEffect, useState } from "react";
 import { BarChart as ReBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
@@ -15,7 +16,7 @@ const BarChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:5001/api/financial/financial-data");
+        const response = await fetch(`${apiUrl}/api/financial/financial-data`);
         const result = await response.json();
 
         const transformedData = result.map((item: FinancialDataItem) => ({

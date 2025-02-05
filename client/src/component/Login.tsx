@@ -62,40 +62,54 @@ const Login = () => {
   };
 
   return (
-    <>
-      <div className="background">
-        <div className="shape"></div>
-        <div className="shape"></div>
+    <div className="relative flex justify-center items-center h-screen bg-[#080710]">
+      {/* Background Shapes */}
+      <div className="absolute w-[430px] h-[520px]">
+        <div className="absolute w-[200px] h-[200px] bg-gradient-to-br from-[#1845ad] to-[#23a2f6] rounded-full -top-20 -left-20"></div>
+        <div className="absolute w-[200px] h-[200px] bg-gradient-to-r from-[#ff512f] to-[#f09819] rounded-full -bottom-20 -right-10"></div>
       </div>
-      <form onSubmit={handleSubmit}>
-        <h3>Login Here</h3>
 
-        <label>Username</label>
+      {/* Form Container */}
+      <form
+        onSubmit={handleSubmit}
+        className="relative z-10 w-[400px] bg-white/10 backdrop-blur-lg border border-white/10 shadow-lg p-10 rounded-lg"
+      >
+        <h3 className="text-2xl font-medium text-white text-center mb-6">Login Here</h3>
+
+        <label className="block text-white text-sm font-medium">Username</label>
         <input
           type="text"
           placeholder="Email or Phone"
           id="username"
           value={data.username}
           onChange={handleInputChange}
+          className="w-full h-12 bg-white/10 rounded px-3 mt-2 text-white placeholder-gray-300 focus:outline-none"
         />
 
-        <label>Password</label>
+        <label className="block text-white text-sm font-medium mt-4">Password</label>
         <input
           type="password"
           placeholder="Password"
           id="password"
           value={data.password}
           onChange={handleInputChange}
+          className="w-full h-12 bg-white/10 rounded px-3 mt-2 text-white placeholder-gray-300 focus:outline-none"
         />
 
-        <button type="submit">Log In</button>
-        {message && <p>{message}</p>}
-        <div className="social">
-          {/* <h4>Register</h4> */}
-          <Link to="/register">Register</Link>
+        <button
+          type="submit"
+          className="mt-6 w-full bg-white text-black font-semibold py-3 rounded hover:bg-gray-200 transition"
+        >
+          Log In
+        </button>
+
+        {message && <p className="text-white text-sm mt-3 text-center">{message}</p>}
+
+        <div className="mt-4 text-center">
+          <Link to="/register" className="text-white hover:underline">Register</Link>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 

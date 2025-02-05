@@ -13,7 +13,4 @@ router.post("/login", loginUser);
 // Logout route
 router.post("/logout", logoutUser);
 
-// Protected route
-// router.get("/", authenticateToken, getUserProfile);
-
 export default router;

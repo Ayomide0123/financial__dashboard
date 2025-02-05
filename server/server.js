@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes.js"
+import financialRoutes from "./routes/financialRoutes.js"
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/users", userRoutes);
+app.use("/api/financial", financialRoutes);
 
 // Start the server
 app.listen(PORT, () => {

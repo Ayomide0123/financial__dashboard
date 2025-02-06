@@ -1,15 +1,14 @@
+import { useAuth } from "../context/AuthContext";
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Logout = () => {
+  const { logout } = useAuth()
   const navigate = useNavigate();
 
   const handleLogout = () => {
     // Clear the JWT token cookie
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
-    // Optionally: Clear user data from local storage or context
-    localStorage.removeItem("user");
+    logout()
 
     // Redirect to the login page or home page
     navigate("/login");

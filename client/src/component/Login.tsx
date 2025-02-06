@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -9,6 +10,7 @@ interface LoginDetails {
 }
 
 const Login = () => {
+  const { login } = useAuth();
   const [data, setData] = useState<LoginDetails>({ username: "", password: "" });
   const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false); // Loader state
@@ -42,8 +44,11 @@ const Login = () => {
       setMessage("Login successful!");
       console.log(result);
 
-      if (result.token) {
-        document.cookie = `token=${result.token}; path=/;`;
+      if (response.ok) {
+        console.log(result); // Check the response in console
+        login(result.token, result.user); // Store user & token in context
+      } else {
+        alert(result.message);
       }
 
       navigate("/");

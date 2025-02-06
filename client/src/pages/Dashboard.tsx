@@ -16,7 +16,7 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className="flex-1 p-5 overflow-auto">
       {user && (
-          <div className="p-6">
+          <div className="p-6 mt-5 text-center md:mt-0 md:text-left">
             <h1 className="text-2xl font-bold">Welcome, {user.name}!</h1>
             {/* <p>Username: {user.username}</p> */}
           </div>

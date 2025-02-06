@@ -38,9 +38,12 @@ const UploadButton = () => {
       if (fileType === "csv") {
         Papa.parse(file, {
           header: true,
-          dynamicTyping: true,
+          skipEmptyLines: true,
+          transformHeader: (header) => header.trim().toLowerCase().replace(/\s+/g, "_"), // Normalize column names
+          dynamicTyping: (field) => field !== "date", // Ensure only numbers are parsed
           complete: (result: { data: FinancialData[] }) => {
             parsedData = result.data;
+            console.log(parsedData); // Debugging: Check if data is correctly formatted
             if (validateData(parsedData)) {
               sendDataToBackend(parsedData);
             } else {
@@ -49,6 +52,7 @@ const UploadButton = () => {
           },
           error: () => setError("❌ Error parsing CSV file."),
         });
+
       } else if (fileType === "xlsx" || fileType === "xls") {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -74,21 +78,26 @@ const UploadButton = () => {
   };
 
   const validateData = (data: FinancialData[]): boolean => {
-    return data.every(row =>
-      row.date &&
-      typeof row.revenue === 'number' &&
-      typeof row.expenses === 'number' &&
-      typeof row.profit === 'number' &&
-      typeof row.customer_count === 'number'
-    );
+    return data.every((row, index) => {
+      if (!row.date || isNaN(new Date(row.date).getTime())) {
+        console.error(`Row ${index + 1}: Invalid date format -> ${row.date}`);
+        return false;
+      }
+      if (typeof row.revenue !== "number" || typeof row.expenses !== "number" || typeof row.profit !== "number" || typeof row.customer_count !== "number") {
+        console.error(`Row ${index + 1}: Invalid number format`, row);
+        return false;
+      }
+      return true;
+    });
   };
 
-  const sendDataToBackend = async (data: FinancialData[]) => {
+
+  const sendDataToBackend = async (parsedData: FinancialData[]) => {
     try {
       const response = await fetch(`${apiUrl}/api/financial/financial-data`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(parsedData),
       });
 
       if (response.ok) {

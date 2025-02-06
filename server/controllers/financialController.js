@@ -26,10 +26,11 @@ export const addFinancialData = async (req, res) => {
   }));
 
   try {
-    await insertBulkFinancialData(dataWithProfit);
+    await insertFinancialData(dataWithProfit);
     res.status(201).json({ message: "Bulk data inserted successfully!" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "An error occurred while inserting bulk data." });
+    console.error("DB Insert Error:", error); // Log exact error
+    res.status(500).json({ message: error.message });
   }
+
 };

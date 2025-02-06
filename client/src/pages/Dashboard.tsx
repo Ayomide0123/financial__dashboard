@@ -16,9 +16,9 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className="flex-1 p-5 overflow-auto">
       {user && (
-          <div className="p-4 bg-gray-200 rounded-md shadow-md">
-            <h3>Welcome, {user.name}!</h3>
-            <p>Username: {user.username}</p>
+          <div className="p-6">
+            <h1 className="text-2xl font-bold">Welcome, {user.name}!</h1>
+            {/* <p>Username: {user.username}</p> */}
           </div>
         )}
         <div className="flex flex-wrap justify-between w-full">

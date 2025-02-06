@@ -1,6 +1,7 @@
-const apiUrl = import.meta.env.VITE_API_URL;
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+const apiUrl = import.meta.env.VITE_API_URL;
 
 interface LoginDetails {
   username: string;
@@ -8,12 +9,9 @@ interface LoginDetails {
 }
 
 const Login = () => {
-  const [data, setData] = useState<LoginDetails>({
-    username: "",
-    password: "",
-  });
-
+  const [data, setData] = useState<LoginDetails>({ username: "", password: "" });
   const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false); // Loader state
   const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,41 +22,37 @@ const Login = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Validate form fields
     if (data.username === "" || data.password === "") {
       setMessage("Please fill out the form completely.");
       return;
     }
 
+    setLoading(true); // Start loading
+
     try {
-      // Make a POST request to your backend API
       const response = await fetch(`${apiUrl}/api/users/login`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        throw new Error("Login failed.");
-      }
+      if (!response.ok) throw new Error("Login failed.");
 
       const result = await response.json();
       setMessage("Login successful!");
-      console.log(result); // Log the response from the server
+      console.log(result);
 
-      // Save the token to a cookie
       if (result.token) {
         document.cookie = `token=${result.token}; path=/;`;
       }
 
-      // Redirect the user to the dashboard page
       navigate("/");
 
     } catch (error) {
       setMessage("Invalid username or password.");
       console.error(error);
+    } finally {
+      setLoading(false); // Stop loading after request completes
     }
   };
 
@@ -86,9 +80,10 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-teal-500 text-white font-semibold py-3 rounded-md hover:bg-gray-600 transition cursor-pointer"
+            className="w-full bg-teal-500 text-white font-semibold py-3 rounded-md hover:bg-gray-600 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={loading}
           >
-            LOGIN
+            {loading ? "Logging in..." : "LOGIN"}
           </button>
 
           {message && <p className="text-red-500 text-sm mt-3 text-center">{message}</p>}

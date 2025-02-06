@@ -16,6 +16,7 @@ const Register = () => {
   });
 
   const [message, setMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false); // New state for loading
   const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,14 +27,14 @@ const Register = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Validate form fields
     if (data.name === "" || data.username === "" || data.password === "") {
       setMessage("Please fill out the form completely.");
       return;
     }
 
+    setIsLoading(true); // Start loader
+
     try {
-      // Make a POST request to your backend API
       const response = await fetch(`${apiUrl}/api/users/register`, {
         method: "POST",
         headers: {
@@ -48,12 +49,14 @@ const Register = () => {
 
       const result = await response.json();
       setMessage("Registration successful!");
-      console.log(result); // Log the response from the server
+      console.log(result);
 
       navigate("/login");
     } catch (error) {
       setMessage("An error occurred during registration.");
       console.error(error);
+    } finally {
+      setIsLoading(false); // Stop loader
     }
   };
 
@@ -91,8 +94,9 @@ const Register = () => {
           <button
             type="submit"
             className="w-full bg-teal-500 text-white font-semibold py-3 rounded-md hover:bg-gray-600 transition cursor-pointer"
+            disabled={isLoading} // Disable button when loading
           >
-            REGISTER
+            {isLoading ? "Registering..." : "REGISTER"}
           </button>
 
           {message && <p className="text-red-500 text-sm mt-3 text-center">{message}</p>}
